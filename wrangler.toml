@@ -1,16 +1,10 @@
 [build]
-command = "npm run cloudflare-build"
-output_directory = ".vercel/output/static"
+command = "npm run build"
+output_directory = "out"
 
 [build.environment]
 NODE_VERSION = "20"
 
-[functions]
-directory = ".vercel/output/functions"
-[functions.[[path]]]
-pattern = ".*"
-function = "[[path]].func"
-
+# 정적 사이트로 변경
 [site]
-bucket = ".vercel/output/static"
-include = ["_next/static/*"]
+bucket = "out"

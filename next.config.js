@@ -5,7 +5,8 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
-  // SSR 모드 사용 (output: 'export' 제거)
+  // 정적 내보내기 다시 활성화
+  output: 'export',
   images: {
     unoptimized: true,  // Cloudflare Pages에서 이미지 최적화 비활성화
   },

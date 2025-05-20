@@ -8,17 +8,23 @@ interface ContentPageParams {
   }
 }
 
-// 동적 라우팅을 위한 generateStaticParams 함수
-// 개발 환경에서는 이 함수가 동작하지 않고, 
-// 런타임에 요청에 따라 페이지가 렌더링됩니다
+// 정적 사이트 생성을 위한 generateStaticParams 함수
 export async function generateStaticParams() {
   try {
     // 모든 컨텐츠 슬러그 가져오기 시도
-    return getAllContentSlugs()
+    const slugs = getAllContentSlugs()
+    console.log('사용 가능한 콘텐츠 슬러그:', slugs.map(item => item.params.slug))
+    return slugs
   } catch (error) {
     console.warn('컨텐츠 슬러그 가져오기 실패:', error)
-    // 빈 배열 반환 - 모든 동적 경로는 런타임에 처리됨
-    return []
+    // 빌드 환경에서는 수동으로 슬러그 정의
+    // 최신 파일을 포함하여 모든 콘텐츠 파일을 여기에 추가해야 합니다
+    return [
+      { slug: 'sample-note' },
+      { slug: 'index' },
+      { slug: 'PRD Multi-Strategy Optimization Backtester (Updated)' },
+      { slug: '1111' } // 새로 추가한 파일
+    ]
   }
 }
 

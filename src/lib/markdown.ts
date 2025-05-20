@@ -198,33 +198,4 @@ export async function getContentBySlug(slug: string): Promise<ContentMeta> {
       content: '<p>The requested content was not found.</p>',
     }
   }
-
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
-  
-  const { data, content } = matter(fileContents)
-  
-  if (!data.title) {
-    data.title = slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')
-  }
-  
-  if (!data.date) {
-    data.date = new Date().toISOString().slice(0, 10)
-  }
-  
-  const processedContent = await remark()
-    .use(remarkGfm)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeStringify)
-    .process(content)
-    
-  const contentHtml = processedContent.toString()
-  
-  return {
-    slug,
-    title: data.title,
-    date: data.date,
-    content: contentHtml,
-    ...data,
-  }
 }
