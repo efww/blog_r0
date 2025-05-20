@@ -10,7 +10,13 @@ interface ContentPageParams {
 
 // Generate static paths for all content
 export async function generateStaticParams() {
-  return getAllContentSlugs()
+  // 하드코딩된 슬러그 목록 반환
+  // 이는 getAllContentSlugs()가 빌드 환경에서 실패하는 경우에 대한 대비책
+  return [
+    { slug: 'sample-note' },
+    { slug: 'index' },
+    { slug: 'PRD Multi-Strategy Optimization Backtester (Updated)' }
+  ]
 }
 
 // Generate metadata for the page
