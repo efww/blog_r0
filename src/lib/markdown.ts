@@ -149,6 +149,10 @@ export async function getContentBySlug(slug: string): Promise<ContentMeta> {
     data.title = slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')
   }
   
+  if (!data.date) {
+    data.date = new Date().toISOString().slice(0, 10)
+  }
+  
   const processedContent = await remark()
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
@@ -160,6 +164,8 @@ export async function getContentBySlug(slug: string): Promise<ContentMeta> {
   
   return {
     slug,
+    title: data.title,
+    date: data.date,
     content: contentHtml,
     ...data,
   }

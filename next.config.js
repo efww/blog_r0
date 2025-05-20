@@ -5,8 +5,7 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
-  // Cloudflare Pages 정적 배포를 위한 설정
-  output: 'export',
+  // Remove static export for now to enable dynamic routes
   images: {
     unoptimized: true,  // Cloudflare Pages에서 이미지 최적화 비활성화
   },
