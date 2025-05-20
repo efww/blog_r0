@@ -121,7 +121,7 @@
   }
 
   .claude-button {
-    @apply rounded-md bg-claude-light-primary px-4 py-2 text-white hover:bg-claude-light-primary-hover dark:bg-claude-dark-primary dark:hover:bg-claude-dark-primary-hover;
+    @apply rounded-md bg-claude-light-primary px-4 py-2 text-white hover:bg-claude-light-primary-hover dark:bg-claude-dark-primary dark:text-white dark:hover:bg-claude-dark-primary-hover;
   }
   
   .claude-card {

@@ -4,11 +4,36 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useState, useEffect } from 'react'
+import { ContentMeta } from '@/lib/markdown'
 
-export default function LeftSidebar() {
+interface LeftSidebarProps {
+  allContent?: ContentMeta[]
+}
+
+export default function LeftSidebar({ allContent = [] }: LeftSidebarProps) {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [contentList, setContentList] = useState<ContentMeta[]>([])
+  
+  // Fetch content on client side if not provided through props
+  useEffect(() => {
+    async function fetchContent() {
+      try {
+        const response = await fetch('/api/content')
+        const data = await response.json()
+        setContentList(data)
+      } catch (error) {
+        console.error('Error fetching content:', error)
+      }
+    }
+    
+    if (allContent.length === 0) {
+      fetchContent()
+    } else {
+      setContentList(allContent)
+    }
+  }, [allContent])
   
   // Check if the screen is mobile size
   useEffect(() => {
@@ -26,9 +51,14 @@ export default function LeftSidebar() {
   
   const menuItems = [
     { title: 'Home', href: '/' },
-    { title: 'Blog', href: '/blog' },
-    { title: 'About', href: '/about' },
   ]
+  
+  // Extract all unique tags from content
+  const allTags = Array.from(new Set(
+    contentList
+      .flatMap(content => content.tags || [])
+      .filter(Boolean)
+  ))
   
   return (
     <>
@@ -55,7 +85,7 @@ export default function LeftSidebar() {
         <div className="p-4">
           <div className="mb-6">
             <Link href="/" className="flex items-center hover-lift">
-              <h1 className="text-2xl font-bold text-claude-light-text dark:text-claude-dark-text">Robert&apos;s</h1>
+              <h1 className="text-2xl font-bold text-claude-light-text dark:text-claude-dark-text">Digital Garden</h1>
             </Link>
           </div>
           
@@ -90,38 +120,41 @@ export default function LeftSidebar() {
           </nav>
           
           <div className="sidebar-section">
-            <h3 className="sidebar-title">Recent Posts</h3>
+            <h3 className="sidebar-title">All Notes</h3>
             <ul className="sidebar-list">
-              <li>
-                <Link 
-                  href="/blog/first-post" 
-                  className="sidebar-link hover-lift"
-                  onClick={() => isMobile && setIsMobileMenuOpen(false)}
-                >
-                  First Post
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/blog/second-post" 
-                  className="sidebar-link hover-lift"
-                  onClick={() => isMobile && setIsMobileMenuOpen(false)}
-                >
-                  Second Post
-                </Link>
-              </li>
+              {contentList.map((content) => (
+                <li key={content.slug}>
+                  <Link 
+                    href={`/content/${content.slug}`} 
+                    className={`sidebar-link hover-lift ${
+                      pathname === `/content/${content.slug}` ? 'active' : ''
+                    }`}
+                    onClick={() => isMobile && setIsMobileMenuOpen(false)}
+                  >
+                    {content.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           
-          <div className="sidebar-section">
-            <h3 className="sidebar-title">Tags</h3>
-            <div className="flex flex-wrap gap-2">
-              <Link href="/tags/tech" className="claude-link internal text-sm" onClick={() => isMobile && setIsMobileMenuOpen(false)}>tech</Link>
-              <Link href="/tags/programming" className="claude-link internal text-sm" onClick={() => isMobile && setIsMobileMenuOpen(false)}>programming</Link>
-              <Link href="/tags/web" className="claude-link internal text-sm" onClick={() => isMobile && setIsMobileMenuOpen(false)}>web</Link>
-              <Link href="/tags/design" className="claude-link internal text-sm" onClick={() => isMobile && setIsMobileMenuOpen(false)}>design</Link>
+          {allTags.length > 0 && (
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {allTags.map((tag) => (
+                  <Link 
+                    key={tag}
+                    href={`/tags/${tag}`} 
+                    className="claude-link internal text-sm" 
+                    onClick={() => isMobile && setIsMobileMenuOpen(false)}
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </aside>
     </>

@@ -9,8 +9,20 @@ import remarkRehype from 'remark-rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
 import { unified } from 'unified'
+import html from 'remark-html'
+import rehypeRaw from 'rehype-raw'
 
 const contentDirectory = path.join(process.cwd(), 'content')
+
+export interface ContentMeta {
+  slug: string
+  title: string
+  date: string
+  tags?: string[]
+  description?: string
+  content: string
+  [key: string]: any
+}
 
 export function getPostBySlug(slug: string) {
   const realSlug = slug.replace(/\.md$/, '')
@@ -72,5 +84,83 @@ export async function markdownToHtml(markdown: string) {
   } catch (error) {
     console.error('Error converting markdown to HTML:', error)
     return ''
+  }
+}
+
+export async function getAllContent(): Promise<ContentMeta[]> {
+  const fileNames = fs.readdirSync(contentDirectory)
+  
+  const allContent = await Promise.all(
+    fileNames
+      .filter(fileName => {
+        return fileName.endsWith('.md')
+      })
+      .map(async fileName => {
+        const slug = fileName.replace(/\.md$/, '')
+        
+        const content = await getContentBySlug(slug)
+        
+        if (!content.date) {
+          content.date = new Date().toISOString().slice(0, 10)
+        }
+        
+        return content
+      })
+  )
+  
+  return allContent.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+}
+
+export function getAllContentSlugs() {
+  const fileNames = fs.readdirSync(contentDirectory)
+  
+  return fileNames.map(fileName => {
+    return {
+      params: {
+        slug: fileName.replace(/\.md$/, ''),
+      },
+    }
+  })
+}
+
+export async function getContentBySlug(slug: string): Promise<ContentMeta> {
+  const fullPath = path.join(contentDirectory, `${slug}.md`)
+  
+  if (!fs.existsSync(fullPath)) {
+    return {
+      slug,
+      title: 'Content not found',
+      date: new Date().toISOString().slice(0, 10),
+      content: '<p>The requested content was not found.</p>',
+    }
+  }
+
+  const fileContents = fs.readFileSync(fullPath, 'utf8')
+  
+  const { data, content } = matter(fileContents)
+  
+  if (!data.title) {
+    data.title = slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')
+  }
+  
+  const processedContent = await remark()
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeStringify)
+    .process(content)
+    
+  const contentHtml = processedContent.toString()
+  
+  return {
+    slug,
+    content: contentHtml,
+    ...data,
   }
 }

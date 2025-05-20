@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import LeftSidebar from '@/components/layout/left-sidebar'
 import RightSidebar from '@/components/layout/right-sidebar'
 import Script from 'next/script'
+import { getAllContent } from '@/lib/markdown'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -13,15 +14,17 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: "Robert's Blog",
-  description: '세상에서 가장 흥륭한 블로그',
+  title: "Digital Garden",
+  description: 'A collection of digital notes and articles',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const allContent = await getAllContent();
+  
   return (
     <html lang="ko" suppressHydrationWarning className={inter.variable}>
       <head>
@@ -59,7 +62,7 @@ export default function RootLayout({
           <div id="navigation-progress" className="navigation-progress"></div>
           
           {/* Left sidebar */}
-          <LeftSidebar />
+          <LeftSidebar allContent={allContent} />
           
           {/* Main content */}
           <main className="main-content">
