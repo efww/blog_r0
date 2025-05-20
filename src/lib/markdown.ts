@@ -142,9 +142,20 @@ export function getAllContentSlugs() {
 }
 
 export async function getContentBySlug(slug: string): Promise<ContentMeta> {
-  const fullPath = path.join(contentDirectory, `${slug}.md`)
+  // URL에서 왔을 수 있는 슬러그 디코딩 처리
+  const decodedSlug = decodeURIComponent(slug)
+  console.log('Trying to find content for slug:', decodedSlug)
+  
+  // 원래 인코딩된 슬러그와 디코딩된 슬러그 모두 시도
+  let fullPath = path.join(contentDirectory, `${decodedSlug}.md`)
+  
+  // 디코딩된 슬러그로 파일이 없으면 원래 슬러그로 시도
+  if (!fs.existsSync(fullPath)) {
+    fullPath = path.join(contentDirectory, `${slug}.md`)
+  }
   
   if (!fs.existsSync(fullPath)) {
+    console.log('Content not found for path:', fullPath)
     return {
       slug,
       title: 'Content not found',

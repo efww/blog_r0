@@ -125,9 +125,9 @@ export default function LeftSidebar({ allContent = [] }: LeftSidebarProps) {
               {contentList.map((content) => (
                 <li key={content.slug}>
                   <Link 
-                    href={`/content/${content.slug}`} 
+                    href={`/content/${encodeURIComponent(content.slug)}`} 
                     className={`sidebar-link hover-lift ${
-                      pathname === `/content/${content.slug}` ? 'active' : ''
+                      pathname === `/content/${encodeURIComponent(content.slug)}` ? 'active' : ''
                     }`}
                     onClick={() => isMobile && setIsMobileMenuOpen(false)}
                   >

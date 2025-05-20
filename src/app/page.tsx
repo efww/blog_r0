@@ -24,7 +24,7 @@ export default async function Home() {
           {allContent.map((content) => (
             <article key={content.slug} className="claude-card hover-lift transition-all duration-200">
               <Link 
-                href={`/content/${content.slug}`}
+                href={`/content/${encodeURIComponent(content.slug)}`}
                 className="block p-4 no-underline text-claude-light-text dark:text-claude-dark-text hover:text-claude-light-text dark:hover:text-claude-dark-text"
               >
                 <h2 className="text-xl font-semibold mb-2">{content.title}</h2>
