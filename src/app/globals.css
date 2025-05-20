@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-claude-light-bg text-claude-light-text dark:bg-claude-dark-bg dark:text-claude-dark-text;
+  }
+}
+
+@layer components {
+  .claude-sidebar {
+    @apply fixed top-0 h-screen overflow-y-auto border-claude-light-border bg-claude-light-sidebar dark:border-claude-dark-border dark:bg-claude-dark-sidebar;
+  }
+  
+  .claude-content {
+    @apply mx-auto max-w-3xl px-4 py-8;
+  }
+  
+  .claude-title {
+    @apply mb-6 text-center text-3xl font-bold;
+  }
+  
+  .claude-subtitle {
+    @apply mb-4 text-center text-xl text-claude-light-text-secondary dark:text-claude-dark-text-secondary;
+  }
+  
+  .claude-link {
+    @apply text-claude-light-primary hover:text-claude-light-primary-hover dark:text-claude-dark-primary dark:hover:text-claude-dark-primary-hover;
+  }
+  
+  .claude-button {
+    @apply rounded-md bg-claude-light-primary px-4 py-2 text-white hover:bg-claude-light-primary-hover dark:bg-claude-dark-primary dark:hover:bg-claude-dark-primary-hover;
+  }
+  
+  .claude-card {
+    @apply rounded-md border border-claude-light-border bg-claude-light-surface p-4 shadow-claude-light dark:border-claude-dark-border dark:bg-claude-dark-surface dark:shadow-claude-dark;
+  }
+  
+  .claude-input {
+    @apply rounded-md border border-claude-light-border bg-claude-light-surface px-3 py-2 dark:border-claude-dark-border dark:bg-claude-dark-surface;
+  }
+  
+  .claude-table {
+    @apply w-full border-collapse;
+  }
+  
+  .claude-table th {
+    @apply border border-claude-light-border bg-claude-light-surface p-2 text-left dark:border-claude-dark-border dark:bg-claude-dark-surface;
+  }
+  
+  .claude-table td {
+    @apply border border-claude-light-border p-2 dark:border-claude-dark-border;
+  }
+  
+  .claude-code {
+    @apply rounded bg-claude-light-code px-1 py-0.5 font-mono text-sm dark:bg-claude-dark-code;
+  }
+  
+  .claude-divider {
+    @apply my-4 h-px w-full bg-claude-light-border dark:bg-claude-dark-border;
+  }
+}
