@@ -5,6 +5,14 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
+  // Cloudflare Pages 정적 배포를 위한 설정
+  output: 'export',
+  images: {
+    unoptimized: true,  // Cloudflare Pages에서 이미지 최적화 비활성화
+  },
+  // 기존 사이트 baseUrl 설정
+  basePath: '',
+  trailingSlash: true,
 }
 
 export default nextConfig

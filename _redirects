@@ -1,0 +1,25 @@
+# Cloudflare Pages 설정
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+# 리다이렉트 및 헤더 설정
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = {path = {ends_with = [".html"]}}
+
+# 필요한 헤더 설정
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
