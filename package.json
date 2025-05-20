@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "cloudflare-build": "next build && next-on-pages",
     "lint": "next lint",
     "test": "playwright test",
     "test:ui": "playwright test --ui",

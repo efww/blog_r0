@@ -118,26 +118,25 @@ export async function getAllContent(): Promise<ContentMeta[]> {
 }
 
 export function getAllContentSlugs() {
-  // 빌드 환경에서는 하드코딩된 슬러그 목록을 반환
-  // 프로덕션 빌드시 이 함수가 호출됨
   try {
+    // 파일 시스템에서 모든 콘텐츠 파일 이름 가져오기
     const fileNames = fs.readdirSync(contentDirectory)
     
-    return fileNames.map(fileName => {
-      return {
-        params: {
-          slug: fileName.replace(/\.md$/, ''),
-        },
-      }
-    })
+    // .md 확장자를 제거하고 슬러그 형태로 반환
+    return fileNames
+      .filter(fileName => fileName.endsWith('.md'))
+      .map(fileName => {
+        return {
+          params: {
+            slug: fileName.replace(/\.md$/, ''),
+          },
+        }
+      })
   } catch (error) {
-    // 파일 시스템 접근 오류 발생 시 하드코딩된 슬러그 반환
-    console.warn('컨텐츠 디렉토리 접근 실패, 하드코딩된 슬러그 사용:', error)
-    return [
-      { params: { slug: 'sample-note' } },
-      { params: { slug: 'index' } },
-      { params: { slug: 'PRD Multi-Strategy Optimization Backtester (Updated)' } }
-    ]
+    // 파일 시스템 접근 오류 발생 시 빈 배열 반환
+    // 서버 사이드 렌더링 모드에서는 동적으로 콘텐츠를 로드함
+    console.warn('컨텐츠 디렉토리 접근 실패:', error)
+    return []
   }
 }
 
@@ -146,16 +145,52 @@ export async function getContentBySlug(slug: string): Promise<ContentMeta> {
   const decodedSlug = decodeURIComponent(slug)
   console.log('Trying to find content for slug:', decodedSlug)
   
-  // 원래 인코딩된 슬러그와 디코딩된 슬러그 모두 시도
-  let fullPath = path.join(contentDirectory, `${decodedSlug}.md`)
-  
-  // 디코딩된 슬러그로 파일이 없으면 원래 슬러그로 시도
-  if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(contentDirectory, `${slug}.md`)
-  }
-  
-  if (!fs.existsSync(fullPath)) {
-    console.log('Content not found for path:', fullPath)
+  try {
+    // 디코딩된 슬러그로 파일 경로 구성
+    let fullPath = path.join(contentDirectory, `${decodedSlug}.md`)
+    
+    // 디코딩된 슬러그로 파일이 없으면 원래 슬러그로 시도
+    if (!fs.existsSync(fullPath)) {
+      fullPath = path.join(contentDirectory, `${slug}.md`)
+    }
+    
+    if (!fs.existsSync(fullPath)) {
+      throw new Error(`Content file not found: ${fullPath}`)
+    }
+    
+    // 여기서 파일을 성공적으로 찾음
+    console.log('Content file found:', fullPath)
+    
+    const fileContents = fs.readFileSync(fullPath, 'utf8')
+    const { data, content } = matter(fileContents)
+    
+    if (!data.title) {
+      data.title = slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ')
+    }
+    
+    if (!data.date) {
+      data.date = new Date().toISOString().slice(0, 10)
+    }
+    
+    const processedContent = await remark()
+      .use(remarkGfm)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeStringify)
+      .process(content)
+      
+    const contentHtml = processedContent.toString()
+    
+    return {
+      slug,
+      title: data.title,
+      date: data.date,
+      content: contentHtml,
+      ...data,
+    }
+  } catch (error) {
+    // 파일 찾기 실패 로그
+    console.log('Content not found or error:', error)
     return {
       slug,
       title: 'Content not found',

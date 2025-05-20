@@ -1,9 +1,16 @@
 [build]
-command = "npm run build"
-output_directory = "out"
+command = "npm run cloudflare-build"
+output_directory = ".vercel/output/static"
 
 [build.environment]
 NODE_VERSION = "20"
 
+[functions]
+directory = ".vercel/output/functions"
+[functions.[[path]]]
+pattern = ".*"
+function = "[[path]].func"
+
 [site]
-bucket = "out"
+bucket = ".vercel/output/static"
+include = ["_next/static/*"]

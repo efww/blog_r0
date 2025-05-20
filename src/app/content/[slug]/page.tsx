@@ -8,15 +8,18 @@ interface ContentPageParams {
   }
 }
 
-// Generate static paths for all content
+// 동적 라우팅을 위한 generateStaticParams 함수
+// 개발 환경에서는 이 함수가 동작하지 않고, 
+// 런타임에 요청에 따라 페이지가 렌더링됩니다
 export async function generateStaticParams() {
-  // 하드코딩된 슬러그 목록 반환
-  // 이는 getAllContentSlugs()가 빌드 환경에서 실패하는 경우에 대한 대비책
-  return [
-    { slug: 'sample-note' },
-    { slug: 'index' },
-    { slug: 'PRD Multi-Strategy Optimization Backtester (Updated)' }
-  ]
+  try {
+    // 모든 컨텐츠 슬러그 가져오기 시도
+    return getAllContentSlugs()
+  } catch (error) {
+    console.warn('컨텐츠 슬러그 가져오기 실패:', error)
+    // 빈 배열 반환 - 모든 동적 경로는 런타임에 처리됨
+    return []
+  }
 }
 
 // Generate metadata for the page

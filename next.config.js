@@ -5,8 +5,7 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
-  // Enable static export for Cloudflare Pages
-  output: 'export',
+  // SSR 모드 사용 (output: 'export' 제거)
   images: {
     unoptimized: true,  // Cloudflare Pages에서 이미지 최적화 비활성화
   },
