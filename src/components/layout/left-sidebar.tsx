@@ -18,7 +18,7 @@ export default function LeftSidebar() {
       <div className="p-4">
         <div className="mb-6">
           <Link href="/" className="flex items-center hover-lift">
-            <h1 className="text-2xl font-bold text-claude-light-primary dark:text-claude-dark-primary">Robert&apos;s</h1>
+            <h1 className="text-2xl font-bold text-claude-light-text dark:text-claude-dark-text">Robert&apos;s</h1>
           </Link>
         </div>
         

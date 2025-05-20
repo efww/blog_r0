@@ -80,8 +80,7 @@
   }
   
   ::selection {
-    background-color: theme('colors.claude.light.accent');
-    @apply text-claude-light-text dark:text-claude-dark-text dark:bg-claude-dark-accent;
+    @apply bg-claude-light-accent text-claude-light-text dark:bg-claude-dark-accent dark:text-claude-dark-text;
   }
 }
 
@@ -152,15 +151,87 @@
   .text-highlight {
     @apply bg-claude-light-highlight dark:bg-claude-dark-highlight px-1 py-0.5 rounded;
   }
-}
+  
+  /* 테마 토글 버튼 스타일 */
+  .theme-toggle {
+    @apply flex items-center justify-center w-8 h-8 rounded-md;
+  }
 
-/* 테마 토글 버튼 스타일 */
-.theme-toggle {
-  @apply flex items-center justify-center w-8 h-8 rounded-md;
-}
+  .theme-toggle-icon {
+    @apply w-5 h-5;
+  }
+  
+  /* 사이드바 내 요소 스타일 */
+  .sidebar-section {
+    @apply mb-6;
+  }
 
-.theme-toggle-icon {
-  @apply w-5 h-5;
+  .sidebar-title {
+    @apply text-lg font-medium mb-3 text-claude-light-text dark:text-claude-dark-text;
+  }
+
+  .sidebar-list {
+    @apply space-y-1;
+  }
+
+  .sidebar-link {
+    @apply block py-1 px-2 rounded-md text-claude-light-text dark:text-claude-dark-text hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
+  }
+
+  .sidebar-link.active {
+    @apply bg-claude-light-accent dark:bg-claude-dark-accent text-claude-light-primary dark:text-claude-dark-primary font-medium;
+  }
+  
+  /* 검색창 스타일 */
+  .search-container {
+    @apply relative w-full;
+  }
+
+  .search-input {
+    @apply w-full py-2 px-3 rounded-md border border-claude-light-border dark:border-claude-dark-border bg-claude-light-bg dark:bg-claude-dark-bg text-claude-light-text dark:text-claude-dark-text focus:outline-none focus:ring-1 focus:ring-claude-light-primary dark:focus:ring-claude-dark-primary;
+  }
+  
+  /* 백링크 스타일 */
+  .backlinks {
+    @apply space-y-2;
+  }
+
+  .backlink-item {
+    @apply block py-1 px-2 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
+  }
+  
+  /* 기존 글 구조 준용을 위한 스타일 */
+  .article-container {
+    @apply max-w-full;
+  }
+
+  .article-header {
+    @apply mb-8;
+  }
+
+  .article-title {
+    @apply text-3xl font-bold mb-2;
+  }
+
+  .article-meta {
+    @apply flex items-center text-sm text-claude-light-text-tertiary dark:text-claude-dark-text-tertiary;
+  }
+
+  .article-date {
+    @apply mr-4;
+  }
+
+  .article-tags {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .article-tag {
+    @apply text-xs bg-claude-light-accent dark:bg-claude-dark-accent px-2 py-1 rounded;
+  }
+
+  .article-content {
+    @apply prose prose-lg dark:prose-invert max-w-none;
+  }
 }
 
 /* 모바일 반응형 */
@@ -171,6 +242,10 @@
   
   .main-content {
     @apply ml-0 mr-0;
+  }
+  
+  .claude-sidebar.right {
+    display: none;
   }
 }
 
@@ -245,37 +320,20 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 출처 및 인용 스타일 */
-.citation {
-  @apply text-claude-light-text-tertiary text-sm mt-2 dark:text-claude-dark-text-tertiary;
-}
-
-/* 목차 스타일 */
-.toc {
-  @apply p-4 rounded-md border border-claude-light-border dark:border-claude-dark-border;
-}
-
-.toc-title {
-  @apply font-bold mb-2;
-}
-
-.toc-list {
-  @apply list-none pl-0;
-}
-
-.toc-list li {
-  @apply mb-2;
-}
-
-.toc-list li a {
-  @apply no-underline;
-}
-
 /* 네비게이션 바 */
 .navigation-progress {
   @apply fixed top-0 left-0 h-[3px] bg-claude-light-primary dark:bg-claude-dark-primary z-50;
   width: 0;
   transition: width 0.2s ease;
+}
+
+/* 다크모드 강화 스타일 */
+.dark {
+  color-scheme: dark;
+}
+
+.dark .claude-sidebar {
+  @apply bg-claude-dark-sidebar;
 }
 
 /* 다크모드 아이콘 표시 */
@@ -293,160 +351,6 @@
 
 :root:not(.dark) .theme-toggle-icon.moon-icon {
   @apply hidden;
-}
-
-/* 사이드바 내 요소 스타일 */
-.sidebar-section {
-  @apply mb-6;
-}
-
-.sidebar-title {
-  @apply text-lg font-medium mb-3;
-}
-
-.sidebar-list {
-  @apply space-y-1;
-}
-
-.sidebar-link {
-  @apply block py-1 px-2 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
-}
-
-.sidebar-link.active {
-  @apply bg-claude-light-accent dark:bg-claude-dark-accent font-medium;
-}
-
-/* 검색창 스타일 */
-.search-container {
-  @apply relative w-full;
-}
-
-.search-input {
-  @apply w-full py-2 px-3 rounded-md border border-claude-light-border dark:border-claude-dark-border bg-claude-light-bg dark:bg-claude-dark-bg text-claude-light-text dark:text-claude-dark-text focus:outline-none focus:ring-1 focus:ring-claude-light-primary dark:focus:ring-claude-dark-primary;
-}
-
-/* 백링크 스타일 */
-.backlinks {
-  @apply space-y-2;
-}
-
-.backlink-item {
-  @apply block py-1 px-2 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
-}
-
-/* 코드 블록 스타일 강화 */
-pre {
-  position: relative;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  background-color: theme('colors.claude.light.code');
-  border: 1px solid theme('colors.claude.light.border');
-}
-
-.dark pre {
-  background-color: theme('colors.claude.dark.code');
-  border-color: theme('colors.claude.dark.border');
-}
-
-pre code {
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-}
-
-/* 인용구 스타일 강화 */
-blockquote {
-  position: relative;
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  background-color: rgba(247, 115, 22, 0.05);
-  border-left: 3px solid theme('colors.claude.light.primary');
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-
-.dark blockquote {
-  background-color: rgba(247, 115, 22, 0.1);
-  border-left-color: theme('colors.claude.dark.primary');
-}
-
-/* 테이블 스타일 강화 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  display: block;
-}
-
-th {
-  background-color: theme('colors.claude.light.accent');
-  padding: 0.75rem;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid theme('colors.claude.light.border');
-}
-
-.dark th {
-  background-color: theme('colors.claude.dark.accent');
-  border-bottom-color: theme('colors.claude.dark.border');
-}
-
-td {
-  padding: 0.75rem;
-  border-bottom: 1px solid theme('colors.claude.light.border');
-}
-
-.dark td {
-  border-bottom-color: theme('colors.claude.dark.border');
-}
-
-tr:hover {
-  background-color: rgba(247, 115, 22, 0.05);
-}
-
-.dark tr:hover {
-  background-color: rgba(247, 115, 22, 0.1);
-}
-
-/* 이미지 효과 */
-img {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-img:hover {
-  transform: scale(1.01);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.dark img:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* 링크 효과 강화 */
-a {
-  position: relative;
-  transition: color 0.2s ease;
-}
-
-a:not(.sidebar-link):not(.backlink-item):after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: currentColor;
-  transition: width 0.3s ease;
-}
-
-a:not(.sidebar-link):not(.backlink-item):hover:after {
-  width: 100%;
-}
-
-/* 페이지 전환 효과 */
-.page-transition {
-  animation: fadeIn 0.5s ease;
 }
 
 /* 스크롤바 스타일 */
