@@ -238,21 +238,25 @@
 @media (max-width: 800px) {
   .claude-sidebar {
     @apply static w-full h-auto border-none py-4;
+    width: 100% !important;
   }
   
   .main-content {
     @apply ml-0 mr-0;
+    width: 100% !important;
   }
   
   .claude-sidebar.right {
-    display: none;
+    display: none !important;
   }
 }
 
 /* 미디어 쿼리를 통한 레이아웃 조정 */
-@media (min-width: 800px) and (max-width: 1200px) {
+@media (min-width: 801px) and (max-width: 1200px) {
   .main-content {
-    @apply ml-[258px] mr-0;
+    margin-left: var(--sidebar-width) !important;
+    margin-right: 0 !important;
+    width: calc(100% - var(--sidebar-width)) !important;
   }
   
   .claude-sidebar.right {
@@ -260,9 +264,11 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1201px) {
   .main-content {
-    @apply ml-[258px] mr-[258px];
+    margin-left: var(--sidebar-width) !important;
+    margin-right: var(--sidebar-width) !important;
+    width: calc(100% - (var(--sidebar-width) * 2)) !important;
   }
 }
 
@@ -327,30 +333,21 @@
   transition: width 0.2s ease;
 }
 
-/* 다크모드 강화 스타일 */
-.dark {
-  color-scheme: dark;
-}
-
-.dark .claude-sidebar {
-  @apply bg-claude-dark-sidebar;
-}
-
 /* 다크모드 아이콘 표시 */
 .dark .theme-toggle-icon.sun-icon {
-  @apply hidden;
+  @apply block;
 }
 
 .dark .theme-toggle-icon.moon-icon {
-  @apply block;
+  @apply hidden;
 }
 
 :root:not(.dark) .theme-toggle-icon.sun-icon {
-  @apply block;
+  @apply hidden;
 }
 
 :root:not(.dark) .theme-toggle-icon.moon-icon {
-  @apply hidden;
+  @apply block;
 }
 
 /* 스크롤바 스타일 */
@@ -370,12 +367,4 @@
 
 .dark ::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.2);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
 }

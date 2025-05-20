@@ -1,7 +1,6 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { Moon, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface ThemeToggleProps {
@@ -21,13 +20,15 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
     return <div className="w-6 h-6" />;
   }
 
+  const isDark = theme === "dark";
+
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
       className={`theme-toggle rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent ${className}`}
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
+      {isDark ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="theme-toggle-icon sun-icon text-claude-dark-primary"

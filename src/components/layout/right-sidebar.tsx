@@ -1,6 +1,26 @@
 "use client"
 
+import { useState, useEffect } from 'react'
+
 export default function RightSidebar() {
+  const [isVisible, setIsVisible] = useState(true)
+  
+  // Check if the screen is large enough to show right sidebar
+  useEffect(() => {
+    const checkVisibility = () => {
+      setIsVisible(window.innerWidth > 1200)
+    }
+    
+    checkVisibility()
+    window.addEventListener('resize', checkVisibility)
+    
+    return () => {
+      window.removeEventListener('resize', checkVisibility)
+    }
+  }, [])
+  
+  if (!isVisible) return null
+  
   return (
     <aside className="claude-sidebar right-0 border-l z-20">
       <div className="p-4">
