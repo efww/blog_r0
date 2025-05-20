@@ -15,4 +15,5 @@ const nextConfig = {
   trailingSlash: true,
 }
 
-export default nextConfig
+// CommonJS 모듈 내보내기 방식으로 변경
+module.exports = nextConfig
