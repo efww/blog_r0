@@ -5,7 +5,8 @@ const nextConfig = {
   experimental: {
     mdxRs: true,
   },
-  // Remove static export for now to enable dynamic routes
+  // Enable static export for Cloudflare Pages
+  output: 'export',
   images: {
     unoptimized: true,  // Cloudflare Pages에서 이미지 최적화 비활성화
   },
