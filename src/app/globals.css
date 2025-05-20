@@ -2,47 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --font-base: 14px;
+  --sidebar-width: 258px;
+  --content-width: 800px;
+}
+
 @layer base {
+  html {
+    font-size: var(--font-base);
+    scroll-behavior: smooth;
+    text-size-adjust: none;
+    overflow-x: hidden;
+    width: 100vw;
+  }
+  
   body {
     @apply bg-claude-light-bg text-claude-light-text dark:bg-claude-dark-bg dark:text-claude-dark-text;
+    @apply font-sans;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  a {
+    @apply font-semibold no-underline transition-colors duration-200 text-claude-light-primary hover:text-claude-light-primary-hover dark:text-claude-dark-primary dark:hover:text-claude-dark-primary-hover;
+  }
+  
+  a.internal {
+    @apply bg-claude-light-accent dark:bg-claude-dark-accent px-1 py-0.5 rounded no-underline;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans text-claude-light-text font-semibold dark:text-claude-dark-text;
+    margin-bottom: 0;
+  }
+  
+  h1 {
+    @apply text-[1.75rem] mt-9 mb-4;
+  }
+  
+  h2 {
+    @apply text-[1.4rem] mt-8 mb-4;
+  }
+  
+  h3 {
+    @apply text-[1.12rem] mt-6 mb-4;
+  }
+  
+  h4, h5, h6 {
+    @apply text-base mt-6 mb-4;
+  }
+  
+  p, li {
+    @apply leading-relaxed;
+  }
+  
+  blockquote {
+    @apply my-4 border-l-3 border-claude-light-primary pl-4 transition-colors duration-200 dark:border-claude-dark-primary;
+  }
+  
+  pre {
+    @apply font-mono p-2 rounded-md overflow-x-auto border border-claude-light-border dark:border-claude-dark-border relative;
+  }
+  
+  code {
+    @apply font-mono text-[0.9em] text-claude-light-text rounded-md py-0.5 px-1 bg-claude-light-code dark:bg-claude-dark-code dark:text-claude-dark-text;
+  }
+  
+  img {
+    @apply max-w-full rounded-md my-4;
+  }
+  
+  hr {
+    @apply w-full my-8 h-px border-none bg-claude-light-border dark:bg-claude-dark-border;
+  }
+  
+  ::selection {
+    background-color: theme('colors.claude.light.accent');
+    @apply text-claude-light-text dark:text-claude-dark-text dark:bg-claude-dark-accent;
   }
 }
 
 @layer components {
   .claude-sidebar {
-    @apply fixed top-0 h-screen overflow-y-auto border-claude-light-border bg-claude-light-sidebar dark:border-claude-dark-border dark:bg-claude-dark-sidebar;
+    @apply fixed top-0 h-screen overflow-y-auto py-8 px-4;
+    width: var(--sidebar-width);
+  }
+  
+  .claude-sidebar.left {
+    @apply left-0 border-r border-claude-light-border dark:border-claude-dark-border bg-claude-light-sidebar dark:bg-claude-dark-sidebar;
+  }
+  
+  .claude-sidebar.right {
+    @apply right-0 border-l border-claude-light-border dark:border-claude-dark-border bg-claude-light-sidebar dark:bg-claude-dark-sidebar;
   }
   
   .claude-content {
-    @apply mx-auto max-w-3xl px-4 py-8;
+    @apply mx-auto px-4 py-8;
+    max-width: var(--content-width);
+    width: 100%;
   }
   
   .claude-title {
-    @apply mb-6 text-center text-3xl font-bold;
+    @apply mb-6 text-3xl font-bold text-center w-full;
   }
   
   .claude-subtitle {
-    @apply mb-4 text-center text-xl text-claude-light-text-secondary dark:text-claude-dark-text-secondary;
+    @apply mb-4 text-xl text-claude-light-text-secondary dark:text-claude-dark-text-secondary;
   }
   
   .claude-link {
     @apply text-claude-light-primary hover:text-claude-light-primary-hover dark:text-claude-dark-primary dark:hover:text-claude-dark-primary-hover;
   }
   
+  .claude-link.internal {
+    @apply bg-claude-light-accent dark:bg-claude-dark-accent px-1 py-0.5 rounded no-underline;
+  }
+
   .claude-button {
     @apply rounded-md bg-claude-light-primary px-4 py-2 text-white hover:bg-claude-light-primary-hover dark:bg-claude-dark-primary dark:hover:bg-claude-dark-primary-hover;
   }
   
   .claude-card {
-    @apply rounded-md border border-claude-light-border bg-claude-light-surface p-4 shadow-claude-light dark:border-claude-dark-border dark:bg-claude-dark-surface dark:shadow-claude-dark;
-  }
-  
-  .claude-input {
-    @apply rounded-md border border-claude-light-border bg-claude-light-surface px-3 py-2 dark:border-claude-dark-border dark:bg-claude-dark-surface;
+    @apply rounded-md border border-claude-light-border bg-claude-light-surface p-4 shadow-md dark:border-claude-dark-border dark:bg-claude-dark-surface;
   }
   
   .claude-table {
-    @apply w-full border-collapse;
+    @apply w-full border-collapse my-4;
   }
   
   .claude-table th {
@@ -60,4 +148,330 @@
   .claude-divider {
     @apply my-4 h-px w-full bg-claude-light-border dark:bg-claude-dark-border;
   }
+  
+  .text-highlight {
+    @apply bg-claude-light-highlight dark:bg-claude-dark-highlight px-1 py-0.5 rounded;
+  }
+}
+
+/* 테마 토글 버튼 스타일 */
+.theme-toggle {
+  @apply flex items-center justify-center w-8 h-8 rounded-md;
+}
+
+.theme-toggle-icon {
+  @apply w-5 h-5;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 800px) {
+  .claude-sidebar {
+    @apply static w-full h-auto border-none py-4;
+  }
+  
+  .main-content {
+    @apply ml-0 mr-0;
+  }
+}
+
+/* 미디어 쿼리를 통한 레이아웃 조정 */
+@media (min-width: 800px) and (max-width: 1200px) {
+  .main-content {
+    @apply ml-[258px] mr-0;
+  }
+  
+  .claude-sidebar.right {
+    @apply hidden;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-content {
+    @apply ml-[258px] mr-[258px];
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* 지연 애니메이션 */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+/* 호버 효과 */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 출처 및 인용 스타일 */
+.citation {
+  @apply text-claude-light-text-tertiary text-sm mt-2 dark:text-claude-dark-text-tertiary;
+}
+
+/* 목차 스타일 */
+.toc {
+  @apply p-4 rounded-md border border-claude-light-border dark:border-claude-dark-border;
+}
+
+.toc-title {
+  @apply font-bold mb-2;
+}
+
+.toc-list {
+  @apply list-none pl-0;
+}
+
+.toc-list li {
+  @apply mb-2;
+}
+
+.toc-list li a {
+  @apply no-underline;
+}
+
+/* 네비게이션 바 */
+.navigation-progress {
+  @apply fixed top-0 left-0 h-[3px] bg-claude-light-primary dark:bg-claude-dark-primary z-50;
+  width: 0;
+  transition: width 0.2s ease;
+}
+
+/* 다크모드 아이콘 표시 */
+.dark .theme-toggle-icon.sun-icon {
+  @apply hidden;
+}
+
+.dark .theme-toggle-icon.moon-icon {
+  @apply block;
+}
+
+:root:not(.dark) .theme-toggle-icon.sun-icon {
+  @apply block;
+}
+
+:root:not(.dark) .theme-toggle-icon.moon-icon {
+  @apply hidden;
+}
+
+/* 사이드바 내 요소 스타일 */
+.sidebar-section {
+  @apply mb-6;
+}
+
+.sidebar-title {
+  @apply text-lg font-medium mb-3;
+}
+
+.sidebar-list {
+  @apply space-y-1;
+}
+
+.sidebar-link {
+  @apply block py-1 px-2 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
+}
+
+.sidebar-link.active {
+  @apply bg-claude-light-accent dark:bg-claude-dark-accent font-medium;
+}
+
+/* 검색창 스타일 */
+.search-container {
+  @apply relative w-full;
+}
+
+.search-input {
+  @apply w-full py-2 px-3 rounded-md border border-claude-light-border dark:border-claude-dark-border bg-claude-light-bg dark:bg-claude-dark-bg text-claude-light-text dark:text-claude-dark-text focus:outline-none focus:ring-1 focus:ring-claude-light-primary dark:focus:ring-claude-dark-primary;
+}
+
+/* 백링크 스타일 */
+.backlinks {
+  @apply space-y-2;
+}
+
+.backlink-item {
+  @apply block py-1 px-2 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent transition-colors duration-200;
+}
+
+/* 코드 블록 스타일 강화 */
+pre {
+  position: relative;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  background-color: theme('colors.claude.light.code');
+  border: 1px solid theme('colors.claude.light.border');
+}
+
+.dark pre {
+  background-color: theme('colors.claude.dark.code');
+  border-color: theme('colors.claude.dark.border');
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* 인용구 스타일 강화 */
+blockquote {
+  position: relative;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background-color: rgba(247, 115, 22, 0.05);
+  border-left: 3px solid theme('colors.claude.light.primary');
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.dark blockquote {
+  background-color: rgba(247, 115, 22, 0.1);
+  border-left-color: theme('colors.claude.dark.primary');
+}
+
+/* 테이블 스타일 강화 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  display: block;
+}
+
+th {
+  background-color: theme('colors.claude.light.accent');
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid theme('colors.claude.light.border');
+}
+
+.dark th {
+  background-color: theme('colors.claude.dark.accent');
+  border-bottom-color: theme('colors.claude.dark.border');
+}
+
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid theme('colors.claude.light.border');
+}
+
+.dark td {
+  border-bottom-color: theme('colors.claude.dark.border');
+}
+
+tr:hover {
+  background-color: rgba(247, 115, 22, 0.05);
+}
+
+.dark tr:hover {
+  background-color: rgba(247, 115, 22, 0.1);
+}
+
+/* 이미지 효과 */
+img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark img:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 링크 효과 강화 */
+a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+a:not(.sidebar-link):not(.backlink-item):after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+a:not(.sidebar-link):not(.backlink-item):hover:after {
+  width: 100%;
+}
+
+/* 페이지 전환 효과 */
+.page-transition {
+  animation: fadeIn 0.5s ease;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
 }

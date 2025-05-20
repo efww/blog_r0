@@ -14,35 +14,34 @@ export default function LeftSidebar() {
   ]
   
   return (
-    <aside className="claude-sidebar left-0 w-64 border-r z-20">
+    <aside className="claude-sidebar left-0 border-r z-20">
       <div className="p-4">
         <div className="mb-6">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center hover-lift">
             <h1 className="text-2xl font-bold text-claude-light-primary dark:text-claude-dark-primary">Robert&apos;s</h1>
           </Link>
         </div>
         
         <div className="flex items-center justify-between mb-4">
-          <div className="relative w-full">
+          <div className="search-container">
             <input
               type="text"
               placeholder="Search..."
-              className="claude-input w-full"
+              className="search-input"
             />
           </div>
           <ThemeToggle className="ml-2" />
         </div>
         
-        <nav className="mt-6">
-          <ul className="space-y-2">
+        <nav className="mt-6 sidebar-section">
+          <h3 className="sidebar-title">Navigation</h3>
+          <ul className="sidebar-list">
             {menuItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`block py-2 px-3 rounded-md hover:bg-claude-light-accent dark:hover:bg-claude-dark-accent ${
-                    pathname === item.href
-                      ? 'bg-claude-light-accent dark:bg-claude-dark-accent font-medium text-claude-light-primary dark:text-claude-dark-primary'
-                      : 'text-claude-light-text dark:text-claude-dark-text'
+                  className={`sidebar-link hover-lift ${
+                    pathname === item.href ? 'active' : ''
                   }`}
                 >
                   {item.title}
@@ -51,6 +50,32 @@ export default function LeftSidebar() {
             ))}
           </ul>
         </nav>
+        
+        <div className="sidebar-section">
+          <h3 className="sidebar-title">Recent Posts</h3>
+          <ul className="sidebar-list">
+            <li>
+              <Link href="/blog/first-post" className="sidebar-link hover-lift">
+                First Post
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/second-post" className="sidebar-link hover-lift">
+                Second Post
+              </Link>
+            </li>
+          </ul>
+        </div>
+        
+        <div className="sidebar-section">
+          <h3 className="sidebar-title">Tags</h3>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/tags/tech" className="claude-link internal text-sm">tech</Link>
+            <Link href="/tags/programming" className="claude-link internal text-sm">programming</Link>
+            <Link href="/tags/web" className="claude-link internal text-sm">web</Link>
+            <Link href="/tags/design" className="claude-link internal text-sm">design</Link>
+          </div>
+        </div>
       </div>
     </aside>
   )
